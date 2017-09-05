@@ -2,9 +2,14 @@
 
 package com.evollu.react.fcm;
 
-import android.app.*;
+import android.app.AlarmManager;
+import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -16,16 +21,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.util.Patterns;
-import android.content.SharedPreferences;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 
 public class FIRLocalMessagingHelper {
     private static final long DEFAULT_VIBRATION = 300L;
@@ -203,7 +207,7 @@ public class FIRLocalMessagingHelper {
             if(!mIsForeground || bundle.getBoolean("show_in_foreground")){
                 Intent intent = new Intent();
                 intent.setClassName(mContext, intentClassName);
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtras(bundle);
                 intent.setAction(bundle.getString("click_action"));
 
